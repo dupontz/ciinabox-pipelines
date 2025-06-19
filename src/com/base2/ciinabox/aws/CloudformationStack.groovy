@@ -166,7 +166,7 @@ class CloudformationStack implements Serializable {
     } 
     catch (AmazonS3Exception ex) {
     // due to client client header requirements, checking if there is a expected region and try again. Possibly dealing with a cloudfront stack 
-      def expectedS3Region = (exceptionMessage =~ /expecting '([a-z0-9-]+)'/)
+      def expectedS3Region = (ex.message =~ /expecting '([a-z0-9-]+)'/)
       def s3GetRegionClient = new AwsClientBuilder([region: expectedS3Region]).s3() 
       bucketRegion = s3GetRegionClient.getBucketLocation(bucket)
     }
