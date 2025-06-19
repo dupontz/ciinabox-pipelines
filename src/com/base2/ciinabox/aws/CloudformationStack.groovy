@@ -154,6 +154,14 @@ class CloudformationStack implements Serializable {
     return template
   }
 
+  def extractExpectedRegion(String exceptionMessage) {
+    def matcher = (exceptionMessage =~ /expecting '([a-z0-9-]+)'/)
+    if (matcher.find()) {
+        return matcher.group(1)
+    }
+    return null
+  }
+
   /**
   Looks up a S3 Bucket region and returns a complete 
   region string that can be used in a client
@@ -162,16 +170,14 @@ class CloudformationStack implements Serializable {
     def bucketRegion = ''
     try {
       def s3GetRegionClient = new AwsClientBuilder([region: clientBuilder.region]).s3() 
-      bucketRegion = s3GetRegionClient.getBucketLocation(bucket)
     } 
     catch (AmazonS3Exception ex) {
     // due to client client header requirements, checking if there is a expected region and try again. Possibly dealing with a cloudfront stack 
-      def expectedS3Region = (ex.message =~ /expecting '([a-z0-9-]+)'/)
+      def expectedS3Region = extractExpectedRegion(ex.message)
       def s3GetRegionClient = new AwsClientBuilder([region: expectedS3Region]).s3() 
-      bucketRegion = s3GetRegionClient.getBucketLocation(bucket)
+      
     }
-    
+    bucketRegion = s3GetRegionClient.getBucketLocation(bucket)
     return bucketRegion
   }
-
 }
