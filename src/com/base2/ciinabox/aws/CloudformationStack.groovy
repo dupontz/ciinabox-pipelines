@@ -9,6 +9,7 @@ import java.io.InputStreamReader
 
 import com.amazonaws.services.s3.AmazonS3URI
 import com.amazonaws.services.s3.model.GetObjectRequest
+import com.amazonaws.services.s3.model.AmazonS3Exception
 import com.amazonaws.services.cloudformation.model.DescribeStacksRequest
 import com.amazonaws.services.cloudformation.model.AmazonCloudFormationException
 import com.amazonaws.services.cloudformation.model.Parameter
