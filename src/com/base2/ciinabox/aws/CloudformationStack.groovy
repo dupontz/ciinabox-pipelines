@@ -168,7 +168,6 @@ class CloudformationStack implements Serializable {
     /**
     Let's assume a default bucket region, most likely dealing with a cloufront stack
     **/
-      s3GetRegionClient == null
       if (bucketRegion == '' || bucketRegion == 'US') {
         bucketRegion = 'us-east-1'
       } else if (bucketRegion == 'EU') {
